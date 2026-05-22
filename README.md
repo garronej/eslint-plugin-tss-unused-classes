@@ -59,5 +59,22 @@ In case of false positive, disabling the warning:
 - For a line: `// eslint-disable-next-line tss-unused-classes/unused-classes`
 - For the entire file: `// eslint-disable-next-line tss-unused-classes/unused-classes`
 
+## Options
 
+By default the linter does not test against renamed classes, eg: 
 
+```js
+const { classes: myClasses } = useStyles();
+```
+
+If you want to enable this then use the `allowRenamedClasses` option in the `.eslintrc.js` file:
+
+```js
+module.exports = {
+  // ...
+  rules: {
+    // ...
+    'tss-unused-classes/unused-classes': ['warn', allowRenamedClasses: true]
+  }
+}
+```

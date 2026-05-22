@@ -30,6 +30,10 @@ module.exports = {
   create: function rule(context) {
     const usedClasses = {};
     const definedClasses = {};
+    const { options = [] } = context;
+    const allowRenamedClasses = options
+      .map((option) => option?.allowRenamedClasses === true)
+      .some((value) => value === true);
 
     return {
       CallExpression(node) {
@@ -127,7 +131,7 @@ module.exports = {
       },
 
       MemberExpression(node) {
-        if (node.object.type === 'Identifier' && node.object.name === 'classes') {
+        if (node.object.type === 'Identifier' && (node.object.name === 'classes' || (allowRenamedClasses && node.object.name))) {
           const whichClass = getBasicIdentifier(node.property);
           if (whichClass) {
             usedClasses[whichClass] = true;
